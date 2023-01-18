@@ -1,6 +1,7 @@
 from sys import stdout
 from sys import exit as sexit
 import RPi.GPIO as GPIO
+import pigpio
 import robot as bot
 from time import sleep
 import requests
@@ -109,18 +110,21 @@ def main() -> int:
 	GPIO.setup(23, GPIO.IN)
 
 	###SERVO
-	GPIO.setup(16, GPIO.OUT)
-	GPIO.setup(12, GPIO.OUT)
-	motor_haut = GPIO.PWM(12, 50)
-	motor_bas = GPIO.PWM(16, 50)
-	motor_haut.start(0)
-	motor_h_i = 0
+	
+	pwm = pigpio.pi()
+	pwm.set_mode(18, pigpio.OUTPUT)
+	pwm.set_PWM_frequency( 18, 50 )
+	#pwm2 = pigpio.pi()
+	#pwm2.set_mode(23, pigpio.OUTPUT)
+	#pwm2.set_PWM_frequency( 23, 50 )
+
+	motor_b_i = 500
+	motor_h_i = 1500
+	echo("start in 2s\n")
 	sleep(2)
-	echo("sleep 2s\n")
-	motor_bas.start(0)
-	motor_b_i = 0
-	sleep(2)
-	echo("sleep 2s\n")
+	pwm.set_servo_pulsewidth( 18, 1500 )
+	#pwm2.set_servo_pulsewidth( 23, 1500 )
+
 	GPIO.output( 22, 0)
 	GPIO.output( 17, 0)
 	GPIO.output( 14, 0)
@@ -128,14 +132,15 @@ def main() -> int:
 	sleep(0.5)
 
 	#SERVER SETUP
-	ip="192.168.78.233"
+	ip="192.168.192.233"
 	port=80
 	url ="http://{0}:{1}".format(ip,port)
+	echo("ready\n")
 	while True:
 		try:
 
 			inp = int(requests.get(url).text)
-
+			#echo(f'{inp}\n')
 			if(inp ==1):
 				bot.avant(GPIO)
 			if(inp ==3):
@@ -147,34 +152,34 @@ def main() -> int:
 			if(inp ==9):
 				bot.stop(GPIO)
 
-			if(inp == 2):
-				if (motor_b_i <= 12):
-					motor_b_i += 0.5
-					motor_bas.ChangeDutyCycle(motor_b_i)
-					time.sleep(1) 
-			if(inp == 6):
-				if (motor_b_i > 0.5):
-					motor_b_i -= 0.5
-					motor_bas.ChangeDutyCycle(motor_b_i)
-					time.sleep(1) 
 			if(inp == 8):
-				if (motor_h_i > 0.5):
-					motor_h_i -= 0.5
-					motor_haut.ChangeDutyCycle(motor_h_i)
-					time.sleep(1) 
+				if (motor_b_i <= 2500-150):
+					motor_b_i += 150
+					pwm.set_servo_pulsewidth( 18, motor_b_i )
+					
 			if(inp == 10):
-				if (motor_h_i > 0.5):
-					motor_h_i -= 0.5
-					motor_haut.ChangeDutyCycle(motor_h_i) 
-					time.sleep(1)
-			
-			motor_haut.ChangeDutyCycle(0)
-			motor_bas.ChangeDutyCycle(0)
+				if (motor_b_i >= 500+150):
+					motor_b_i -= 150
+					pwm.set_servo_pulsewidth( 18, motor_b_i )
+					
+			"""
+			if(inp == 6):
+				if (motor_h_i <= 2500):
+					motor_h_i += 100
+					#pwm2.set_servo_pulsewidth( 23, motor_h_i )
+					echo(f'{1}'.format(motor_h_i))
+					
+			if(inp == 2):
+				if (motor_h_i > 510):
+					motor_h_i -= 100
+					#pwm2.set_servo_pulsewidth( 23, motor_h_i )
+					echo(f'{1}\n'.format(motor_h_i))
+			"""
 				
 		except KeyboardInterrupt:
 			GPIO.cleanup()
-			motor_haut.stop()
-			motor_bas.stop()
+			pwm.set_PWM_dutycycle( 18, 0 )
+			pwm.set_PWM_dutycycle( 23, 0 )
 			return 0
 		except:
 			pass
