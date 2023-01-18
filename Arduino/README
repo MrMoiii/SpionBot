@@ -1,0 +1,2 @@
+#1 installer les librairies nécessaires dans le gestionnaire de librairie de l'application ardue .
+#2 remplacer le SSID et le MDP de votre connexion au début du code. (La raspberry doit être connectée au même réseau).
