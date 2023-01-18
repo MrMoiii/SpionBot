@@ -21,7 +21,6 @@ void setup() {
   h = 1;
   isPressed = false;
   Serial.begin(9600);
-  //while (!Serial);
   Serial.println("Started");
 
   if (!IMU.begin()) {
