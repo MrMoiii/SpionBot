@@ -21,40 +21,26 @@ void setup() {
   h = 1;
   isPressed = false;
   Serial.begin(9600);
-  while (!Serial);
+  //while (!Serial);
   Serial.println("Started");
 
   if (!IMU.begin()) {
-    Serial.println("Failed to initialize IMU!");
     while (1);
   }
 
-  Serial.print("Accelerometer sample rate = ");
-  Serial.print(IMU.accelerationSampleRate());
-  Serial.println("Hz");
   ///
-  //Initialize serial and wait for port to open:
-  Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
+  
 
   // check for the WiFi module:
   if (WiFi.status() == WL_NO_MODULE) {
-    Serial.println("Communication with WiFi module failed!");
     // don't continue
     while (true);
   }
 
   String fv = WiFi.firmwareVersion();
-  if (fv < WIFI_FIRMWARE_LATEST_VERSION) {
-    Serial.println("Please upgrade the firmware");
-  }
 
   // attempt to connect to Wifi network:
   while (status != WL_CONNECTED) {
-    Serial.print("Attempting to connect to SSID: ");
-    Serial.println(ssid);
     // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
     status = WiFi.begin(ssid, pass);
 
@@ -74,7 +60,6 @@ void loop() {
   {
       if (!isPressed)
       {
-        Serial.println("Button");
           isPressed = true;
           h++;
           if (h>2){
@@ -97,6 +82,7 @@ void loop() {
     while (client.connected()) {
       if (client.available()) {
         char c = client.read();
+        Serial.println("request");
         // if you've gotten to the end of the line (received a newline
         // character) and the line is blank, the http request has ended,
         // so you can send a reply
@@ -115,8 +101,6 @@ void loop() {
     break;
   }
   if (x < -0.4) {
-    Serial.print("h = ");
-    Serial.println(h);
     client.println(3*h);
     break;
     }
@@ -152,18 +136,10 @@ void loop() {
 
 
 void printWifiStatus() {
-  // print the SSID of the network you're attached to:
-  Serial.print("SSID: ");
-  Serial.println(WiFi.SSID());
 
   // print your board's IP address:
   IPAddress ip = WiFi.localIP();
-  Serial.print("IP Address: ");
-  Serial.println(ip);
 
   // print the received signal strength:
   long rssi = WiFi.RSSI();
-  Serial.print("signal strength (RSSI):");
-  Serial.print(rssi);
-  Serial.println(" dBm");
 }
