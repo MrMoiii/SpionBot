@@ -8,8 +8,8 @@ int degreesX = 0;
 int degreesY = 0;
 int h;
 ///////please enter your sensitive data in the Secret tab/arduino_secrets.h
-char ssid[] = "simple";        // your network SSID (name)
-char pass[] = "simple12";    // your network password (use for WPA, or use as key for WEP)
+char ssid[] = "SSID DE TA CONNECTION";        // your network SSID (name)
+char pass[] = "MDP DE TA CONNECTION";    // your network password (use for WPA, or use as key for WEP)
 int keyIndex = 0;                 // your network key Index number (needed only for WEP)
 
 int status = WL_IDLE_STATUS;
