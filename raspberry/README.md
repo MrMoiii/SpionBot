@@ -26,8 +26,8 @@ Suivre la notice d'assemblage [ici](https://esieabot.esiea.fr/fr/documentation-f
 ## Installation
 Installer via la commande ```git clone https://github.com/MrMoiii/SpionBot/raspberry```<br />
 
-Pour utiliser le programme vous devez installer les librairies python suivantes:
-```sudo pip install pigpio requests picamera systemd-socketserver```<\br>
+Pour utiliser le programme vous devez installer les librairies python suivantes:<br />
+```sudo pip install pigpio requests picamera systemd-socketserver```<br />
  
 ## Usage
 
