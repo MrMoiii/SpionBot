@@ -24,7 +24,7 @@ Suivre la notice d'assemblage [ici](https://esieabot.esiea.fr/fr/documentation-f
   * 13 servo du haut
   
 ## Installation
-Installer via la commande ```git clone https://github.com/MrMoiii/SpionBot/raspberry```<br />
+Installer via la commande ```https://github.com/MrMoiii/SpionBot.git``` (seul la partie raspberry est importante ici)<br />
 
 Pour utiliser le programme vous devez installer les librairies python suivantes:<br />
 ```sudo pip install pigpio requests picamera systemd-socketserver```<br />
