@@ -1,4 +1,4 @@
 #!/bin/bash
 sudo pigpiod
-nohup python3 /home/pi/projet/camera.py &
-python3 /home/pi/projet/main.py
+nohup python3 camera.py &
+python3 main.py
